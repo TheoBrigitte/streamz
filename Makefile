@@ -1,22 +1,22 @@
-NAME := confluence
-DOCKER_IMAGE := theo01/${NAME}-client
+NAME := streamz
+DOCKER_IMAGE := theo01/${NAME}
 
 VERSION := $(shell git describe --always --long --dirty --tags || date)
 
 all: client
 
-client: package-client publish-client
+client: package publish
 
-build-client:
+build:
 	npm run build
 
-package-client:
+package:
 	@docker build -t ${DOCKER_IMAGE} .
 
-publish-client:
+publish:
 	@docker push ${DOCKER_IMAGE}
 
-run-client:
+run:
 	npm start
 
-.PHONY: client build-client package-client publish-client run-client
+.PHONY: client build package publish run

@@ -11,7 +11,7 @@ COPY public public
 COPY src src
 COPY Makefile .
 
-RUN make build-client
+RUN make build
 
 
 FROM scratch as runtime
