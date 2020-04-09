@@ -9,6 +9,7 @@ class App extends React.Component {
         super(props)
         this.state = {
             status: 'off',
+            loaded: false,
             metadata: null,
             squares: Array(1).fill({Status: "initialize", Width: 100}),
             subtitleID: null,
@@ -53,6 +54,7 @@ class App extends React.Component {
         // Query metadata.
         this.setState({
             status: "fetching metadata",
+            loaded: false,
             metadata: null,
             squares: Array(1).fill({Status: "initialize", Width: 100}),
             subtitleID: null,
@@ -74,6 +76,11 @@ class App extends React.Component {
                     .then(({ data }) => {
                         this.setState({
                             subtitles: data
+                        })
+                    })
+                    .finally(() => {
+                        this.setState({
+                            loaded: true
                         })
                     })
 
@@ -136,7 +143,7 @@ class App extends React.Component {
                 </div>
                 <div className="player">
                     <div className="container">
-                        {this.state.metadata ?
+                        {this.state.loaded ?
                         <div className="player-container">
                             <video autoPlay controls src={this.state.metadata ? this.props.api_http+"/data?ih=" + this.state.metadata.hash + "&path="+this.state.metadata.file: ''} type="video/mp4">
                                 <track default kind="captions"
