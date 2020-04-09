@@ -49,7 +49,7 @@ class App extends React.Component {
 
     // Handles changes when a value is entered in the input field.
     handleHashChange(event) {
-        console.log("handleHashChange", event.target.value)
+        console.log("fetching metadata", event.target.value)
 
         // Query metadata.
         this.setState({
@@ -64,7 +64,7 @@ class App extends React.Component {
         fetch(this.props.api_http+"/metadata?query="+event.target.value)
             .then(res => res.json())
             .then(res => {
-                console.log(res)
+                console.log("fetched metadata", res)
                 this.setState({
                     status: "fetched metadata",
                     metadata: res,
@@ -72,6 +72,7 @@ class App extends React.Component {
                 })
 
 
+                console.log("fetching subtitles")
                 axios.get(this.props.api_http+"/subtitles?ih="+res.hash+"&path="+res.file)
                     .then(({ data }) => {
                         this.setState({
@@ -79,6 +80,7 @@ class App extends React.Component {
                         })
                     })
                     .finally(() => {
+                        console.log("fetched subtitles")
                         this.setState({
                             loaded: true
                         })
@@ -88,27 +90,31 @@ class App extends React.Component {
                 this.ws = new WebSocket(this.props.api_ws+"/progress?ih="+res.hash)
 
                 this.ws.onopen = () => {
-                    this.setState({ status: "websocket connected" });
                     console.log("ws connected")
+
+                    this.setState({ status: "websocket connected" });
                 }
                 this.ws.onmessage = evt => {
+                    console.log("ws event")
+
                     // when receiving an event update the progress bar.
-                    console.log("websocket event")
                     const bars = JSON.parse(evt.data)
                     this.setState({ squares: bars })
                 }
                 this.ws.onclose = () => {
+                    console.log('ws disconnected')
+
                     // automatically try to reconnect on connection loss
                     this.setState({ status: "websocket disconnected" });
-                    console.log('ws disconnected')
                     this.setState({
                         ws: new WebSocket(this.props.api_ws+"/progress?ih="+res.hash),
                     })
                 }
             })
             .catch(error => {
-                this.setState({ status: "metadata failed" })
                 console.log('request failed', error)
+
+                this.setState({ status: "metadata failed" })
             });
     }
 
@@ -145,6 +151,7 @@ class App extends React.Component {
                     <div className="container">
                         {this.state.loaded ?
                         <div className="player-container">
+                            {console.log('render player')}
                             <video autoPlay controls src={this.state.metadata ? this.props.api_http+"/data?ih=" + this.state.metadata.hash + "&path="+this.state.metadata.file: ''} type="video/mp4">
                                 <track default kind="captions"
                                     srcLang="en"
