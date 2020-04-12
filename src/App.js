@@ -15,6 +15,24 @@ class App extends React.Component {
             subtitleID: null,
             subtitles: [],
         };
+        this.plyr = <PlyrComponent
+            sources={{
+                type: 'video',
+                sources: [],
+            }}
+            options={{
+                controls: [
+                    'play',
+                    'progress',
+                    'current-time',
+                    'mute',
+                    'volume',
+                    'captions',
+                    'settings',
+                    'fullscreen',
+                ],
+            }}
+            />
     }
 
 
@@ -96,6 +114,10 @@ class App extends React.Component {
                     hash: res.hash,
                 })
 
+                this.plyr.props.sources.sources[0] = {
+                    src: this.props.api_http+"/data?ih=" + res.hash + "&path="+res.file,
+                    type: 'video/mp4',
+                }
 
                 console.log("fetching subtitles")
                 axios.get(this.props.api_http+"/subtitles?ih="+res.hash+"&path="+res.file)
@@ -103,6 +125,8 @@ class App extends React.Component {
                         this.setState({
                             subtitles: data
                         })
+
+                        this.plyr.props.sources.tracks = data.map((item,key) => this.renderSubtitlePlyr(this.props.api_http,item))
                     })
                     .finally(() => {
                         console.log("fetched subtitles")
@@ -174,31 +198,7 @@ class App extends React.Component {
                     <div className="container">
                         {this.state.loaded ?
                         <div className="player-container">
-                            {console.log('render player')}
-                            <PlyrComponent
-                                sources={{
-                                    type: 'video',
-                                    sources: [
-                                        {
-                                            src: this.props.api_http+"/data?ih=" + this.state.metadata.hash + "&path="+this.state.metadata.file,
-                                            type: 'video/mp4',
-                                        }
-                                    ],
-                                    tracks: this.state.subtitles.map((item,key) => this.renderSubtitlePlyr(this.props.api_http,item)),
-                                }}
-                                options={{
-                                    controls: [
-                                        'play',
-                                        'progress',
-                                        'current-time',
-                                        'mute',
-                                        'volume',
-                                        'captions',
-                                        'settings',
-                                        'fullscreen',
-                                    ],
-                                }}
-                            />
+                            {this.plyr}
                             <div className="progress">{this.state.squares.map((item,key) => this.renderSquare(item,key))}</div>
                         </div>
                         : '' }
