@@ -27,15 +27,23 @@ class Search extends Component {
 	})
     };
 
-    onSuggestionsFetchRequested = ({ value }) => {
-        axios.get(this.props.api_http+"/search?query="+value)
-	    .then(({ data }) => {
-                if (data.length > 0) {
-                    this.setState({
-                        suggestions: data
-                    })
-                }
-	    })
+    onKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            this.onSuggestionsFetchRequested({value: this.state.value, reason: 'suggestion-revealed'})
+        }
+    };
+
+    onSuggestionsFetchRequested = ({ value, reason }) => {
+        if (reason === 'suggestion-revealed') {
+            axios.get(this.props.api_http+"/search?query="+value)
+                .then(({ data }) => {
+                    if (data.length > 0) {
+                        this.setState({
+                            suggestions: data
+                        })
+                    }
+                })
+        }
     };
 
     onSuggestionsClearRequested = () => {
@@ -54,7 +62,8 @@ class Search extends Component {
 	const inputProps = {
 	    placeholder: 'Movie title',
 	    value,
-	    onChange: this.onChange
+	    onChange: this.onChange,
+	    onKeyDown: this.onKeyDown
 	};
 
 
