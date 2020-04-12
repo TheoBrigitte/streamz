@@ -158,6 +158,7 @@ class App extends React.Component {
 
     render() {
         //<div className="progress-bar">{React.Children.map(this.state.squares,(item) => this.renderSquare(item))}</div>
+        //<div className="hash"><input type="text" placeholder="Magnet or Hash" ref="hash" name="hash" value={this.state.hash} onChange={this.handleHashChange.bind(this)} /></div>
         return (
             <div>
                 <div className="info">
@@ -165,7 +166,6 @@ class App extends React.Component {
                     <div className="name"><div className="label">Name</div><div>{this.state.metadata ? this.state.metadata.name : ''}</div></div>
                 </div>
                 <div className="input">
-                    <div className="hash"><input type="text" placeholder="Magnet or Hash" ref="hash" name="hash" value={this.state.hash} onChange={this.handleHashChange.bind(this)} /></div>
                     <Search handleClick={this.handleSearchClick} api_http={this.props.api_http} api_ws={this.props.api_ws} />
                 </div>
                 <div className="player">
