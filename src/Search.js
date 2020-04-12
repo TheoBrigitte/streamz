@@ -11,20 +11,20 @@ const renderSuggestion = suggestion => (
 
 class Search extends Component {
     constructor(props) {
-	super(props)
-	this.state = {
-	    value: '',
-	    suggestions: [],
+        super(props)
+        this.state = {
+            value: '',
+            suggestions: [],
 
-	    query: '',
-	    results: [],
-	}
+            query: '',
+            results: [],
+        }
     }
 
     onChange = (event, { newValue }) => {
-	this.setState({
-	    value: newValue
-	})
+        this.setState({
+            value: newValue
+        })
     };
 
     onKeyDown = (event) => {
@@ -47,37 +47,37 @@ class Search extends Component {
     };
 
     onSuggestionsClearRequested = () => {
-	this.setState({
-	    suggestions: []
-	});
+        this.setState({
+            suggestions: []
+        });
     };
 
     onSuggestionSelected = ( e, s ) => {
-	this.props.handleClick(s.suggestion.torrent.hash)
+        this.props.handleClick(s.suggestion.torrent.hash)
     };
 
     render() {
-	const { value, suggestions } = this.state;
+        const { value, suggestions } = this.state;
 
-	const inputProps = {
-	    placeholder: 'Movie title',
-	    value,
-	    onChange: this.onChange,
-	    onKeyDown: this.onKeyDown
-	};
+        const inputProps = {
+            placeholder: 'Movie title',
+            value,
+            onChange: this.onChange,
+            onKeyDown: this.onKeyDown
+        };
 
 
-	return (
-	    <Autosuggest
-		suggestions={suggestions}
-		onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-		onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-		onSuggestionSelected={this.onSuggestionSelected}
-		getSuggestionValue={getSuggestionValue}
-		renderSuggestion={renderSuggestion}
-		inputProps={inputProps}
-	    />
-	);
+        return (
+            <Autosuggest
+                suggestions={suggestions}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                onSuggestionSelected={this.onSuggestionSelected}
+                getSuggestionValue={getSuggestionValue}
+                renderSuggestion={renderSuggestion}
+                inputProps={inputProps}
+            />
+        );
     }
 }
 
