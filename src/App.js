@@ -47,6 +47,31 @@ class App extends React.Component {
         this.setState({ subtitleID: id });
     }
 
+    wsConnect = (hash) => {
+        // Poll information on download progression.
+        var ws = new WebSocket(this.props.api_ws+"/progress?ih="+hash)
+
+        ws.onopen = () => {
+            console.log("ws connected")
+
+            this.setState({ status: "websocket connected" })
+        }
+        ws.onmessage = evt => {
+            console.log("ws event")
+
+            // when receiving an event update the progress bar.
+            const bars = JSON.parse(evt.data)
+            this.setState({ squares: bars })
+        }
+        ws.onclose = () => {
+            console.log('ws disconnected')
+
+            // automatically try to reconnect on connection loss
+            this.setState({ status: "websocket disconnected" })
+            setTimeout(this.wsConnect(hash), 1000)
+        }
+    }
+
     // Handles changes when a value is entered in the input field.
     handleHashChange(event) {
         console.log("fetching metadata", event.target.value)
@@ -86,30 +111,7 @@ class App extends React.Component {
                         })
                     })
 
-                // Poll information on download progression.
-                this.ws = new WebSocket(this.props.api_ws+"/progress?ih="+res.hash)
-
-                this.ws.onopen = () => {
-                    console.log("ws connected")
-
-                    this.setState({ status: "websocket connected" });
-                }
-                this.ws.onmessage = evt => {
-                    console.log("ws event")
-
-                    // when receiving an event update the progress bar.
-                    const bars = JSON.parse(evt.data)
-                    this.setState({ squares: bars })
-                }
-                this.ws.onclose = () => {
-                    console.log('ws disconnected')
-
-                    // automatically try to reconnect on connection loss
-                    this.setState({ status: "websocket disconnected" });
-                    this.setState({
-                        ws: new WebSocket(this.props.api_ws+"/progress?ih="+res.hash),
-                    })
-                }
+                this.wsConnect(res.hash)
             })
             .catch(error => {
                 console.log('request failed', error)
