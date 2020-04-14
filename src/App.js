@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios'
 import Search from './Search';
-import { PlyrComponent } from 'plyr-react';
+import PlyrComponent from './PlyrComponent';
 
 class App extends React.Component {
     // Initialize value when component is created.
