@@ -1,13 +1,12 @@
 NAME := streamz
 DOCKER_IMAGE := theo01/${NAME}
 
-VERSION := $(shell git describe --always --long --dirty --tags || date)
-
 all: client
 
 client: package publish
 
 build:
+	npm ci --only=production
 	npm run build
 
 package:
