@@ -13,8 +13,6 @@ COPY Makefile .
 
 RUN make build
 
-
-FROM scratch as runtime
-VOLUME /usr/app
-COPY --from=builder /usr/src/app/build /usr/app
-CMD ["noop"]
+FROM busybox
+COPY --from=builder /usr/src/app/build /app
+CMD ["cp", "-r", "/app/.", "/dst/"]
