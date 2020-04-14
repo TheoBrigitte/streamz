@@ -9,6 +9,9 @@ class PlyrComponent extends React.Component {
   componentDidMount() {
     this.player = new Plyr('.js-plyr', this.props.options)
     this.player.source = this.props.sources
+    if (this.props.progress !== undefined) {
+        this.player.on('progress', this.props.progress)
+    }
   }
 
   componentWillUnmount() {
@@ -90,6 +93,7 @@ PlyrComponent.propTypes = {
   sources: PropTypes.object,
   source: PropTypes.func,
   destroy: PropTypes.func,
+  progress: PropTypes.func,
 }
 
 export default PlyrComponent
