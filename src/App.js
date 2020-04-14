@@ -15,6 +15,7 @@ class App extends React.Component {
             subtitleID: null,
             subtitles: [],
         };
+        this.ws = false
         this.plyr = <PlyrComponent
             sources={{
                 type: 'video',
@@ -32,9 +33,9 @@ class App extends React.Component {
                     'fullscreen',
                 ],
             }}
-            />
+            progress={this.progress}
+        />
     }
-
 
     componentDidMount() {
         // Load hash from url anchor.
@@ -65,6 +66,14 @@ class App extends React.Component {
         this.setState({ subtitleID: id });
     }
 
+    progress = (event) => {
+        console.log('progress', this.ws, this.state.hash)
+        if (!this.ws) {
+            this.ws = true
+            this.wsConnect(this.state.hash)
+        }
+    }
+
     wsConnect = (hash) => {
         // Poll information on download progression.
         var ws = new WebSocket(this.props.api_ws+"/progress?ih="+hash)
@@ -84,9 +93,8 @@ class App extends React.Component {
         ws.onclose = () => {
             console.log('ws disconnected')
 
-            // automatically try to reconnect on connection loss
             this.setState({ status: "websocket disconnected" })
-            setTimeout(this.wsConnect(hash), 1000)
+            this.ws = false
         }
     }
 
@@ -134,8 +142,6 @@ class App extends React.Component {
                             loaded: true
                         })
                     })
-
-                this.wsConnect(res.hash)
             })
             .catch(error => {
                 console.log('request failed', error)
