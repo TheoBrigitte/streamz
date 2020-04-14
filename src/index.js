@@ -14,8 +14,10 @@ const API_HTTP = API_HTTP_PROTO+API_HOSTPATH
 const API_WS= API_WS_PROTO+API_HOSTPATH
 
 export const load = () => {
+  var start = Date.now()
   console.log('loading');
   ReactDOM.render(<App api_http={API_HTTP} api_ws={API_WS} />, document.getElementById('root'));
+  console.log('loaded in ',Date.now() - start,'ms');
 };
 
 load();
