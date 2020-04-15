@@ -5,7 +5,6 @@ After=docker.service
 
 [Service]
 Type=oneshot
-Restart=on-failure
 ExecStartPre=-/usr/bin/docker kill %n
 ExecStartPre=-/usr/bin/docker rm %n
 ExecStartPre=/usr/bin/docker pull theo01/streamz:latest
@@ -14,7 +13,6 @@ ExecStart=/usr/bin/docker run \
   --name %n \
   --mount 'type=volume,source=streamz,destination=/dst' \
   theo01/streamz:latest
-ExecStop=/usr/bin/docker stop ${NAME}
 
 [Install]
 WantedBy=multi-user.target
