@@ -4,12 +4,12 @@
   "homepage": "https://github.com/TheoBrigitte/streamz",
   "private": true,
   "dependencies": {
-    "plyr": "^3.5.10",
     "react": "^16.13.1",
     "react-autosuggest": "^10.0.0",
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
-    "react-virtualized": "^9.21.2"
+    "react-virtualized": "^9.21.2",
+    "video.js": "^7.7.5"
   },
   "devDependencies": {
     "fsevents": "^2.1.2",
