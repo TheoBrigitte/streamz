@@ -67,7 +67,6 @@ class App extends React.Component {
     }
 
     progress = (event) => {
-        console.log('progress', this.ws, this.state.hash)
         if (!this.ws) {
             this.ws = true
             this.wsConnect(this.state.hash)
