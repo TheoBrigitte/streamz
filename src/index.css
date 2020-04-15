@@ -15,19 +15,10 @@ body {
     display: inline-block;
 }
 
-.player {
-    display: flex;
-    justify-content: center;
-}
-
-.player .container {
-    display: flex;
-    max-height: 705px;
-}
-
 .player .player-container {
     max-width: 85%;
-    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .player video {

@@ -1,6 +1,6 @@
 import React from 'react'
 import Search from './Search'
-import PlyrComponent from './PlyrComponent'
+import VideoPlayer from './VideoPlayer'
 
 class App extends React.Component {
     // Initialize value when component is created.
@@ -15,25 +15,31 @@ class App extends React.Component {
             subtitles: [],
         }
         this.ws = false
-        this.plyr = <PlyrComponent
-            sources={{
-                type: 'video',
-                sources: [],
-            }}
+
+        this.videoPlayer = <VideoPlayer
             options={{
-                controls: [
-                    'play',
-                    'progress',
-                    'current-time',
-                    'mute',
-                    'volume',
-                    'captions',
-                    'settings',
-                    'fullscreen',
-                ],
+                autoplay: true,
+                controls: true,
+                sources: [],
+                fluid: true,
             }}
-            progress={this.progress}
+            tracksFunc={this.tracksFunc}
+            onProgress={this.progress}
         />
+    }
+
+    tracksFunc = (player) => {
+        if (this.state && this.state.subtitles) {
+            this.state.subtitles.forEach(item => {
+                console.log('track', item.language)
+                player.addRemoteTextTrack({
+                    kind: 'subtitles',
+                    label: item.language + ' (' + item.downloads + ')',
+                    srclang: 'en',
+                    src: this.props.api_http+"/subtitle?id="+item.id
+                })
+            })
+        }
     }
 
     componentDidMount() {
@@ -118,7 +124,7 @@ class App extends React.Component {
                     hash: res.hash,
                 })
 
-                this.plyr.props.sources.sources[0] = {
+                this.videoPlayer.props.options.sources[0] = {
                     src: this.props.api_http+"/data?ih=" + res.hash + "&path="+res.file,
                     type: 'video/mp4',
                 }
@@ -135,8 +141,6 @@ class App extends React.Component {
                         this.setState({
                             subtitles: data
                         })
-
-                        this.plyr.props.sources.tracks = data.map((item,key) => this.renderSubtitlePlyr(this.props.api_http,item))
                     })
                     .catch(error => {
                         console.log('subtitles request failed', error)
@@ -159,27 +163,6 @@ class App extends React.Component {
     renderSquare(item,key) {
         return (
             <div key={key} className={"bar " + item.Status} style={{width: item.Width+'%'}} />
-        )
-    }
-
-    renderSubtitlePlyr(baseURL,item) {
-        return (
-            {
-                kind: 'captions',
-                label: item.language + ' (' + item.downloads + ')',
-                srclang: 'en',
-                src: baseURL+"/subtitle?id="+item.id,
-            }
-        )
-    }
-
-    renderSubtitleTrack(item,key) {
-        return (
-            <track
-                kind="captions"
-                srcLang="en"
-                ref="subtitle"
-                src={this.props.api_http+"/subtitle?id="+item.id} />
         )
     }
 
@@ -209,7 +192,7 @@ class App extends React.Component {
                     <div className="container">
                         {this.state.loaded ?
                         <div className="player-container">
-                            {this.plyr}
+                            {this.videoPlayer}
                             <div className="progress">{this.state.squares.map((item,key) => this.renderSquare(item,key))}</div>
                         </div>
                         : '' }
