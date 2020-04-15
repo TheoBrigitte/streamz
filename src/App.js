@@ -112,7 +112,12 @@ class App extends React.Component {
             hash: event.target.value,
         })
         fetch(this.props.api_http+"/metadata?query="+event.target.value)
-            .then(res => res.json())
+            .then(res => {
+                if (res.ok)
+                    return res.json()
+                else
+                    throw res
+            })
             .then(res => {
                 console.log("fetched metadata", res)
                 this.setState({
@@ -127,13 +132,22 @@ class App extends React.Component {
                 }
 
                 console.log("fetching subtitles")
-                axios.get(this.props.api_http+"/subtitles?ih="+res.hash+"&path="+res.file)
-                    .then(({ data }) => {
+                fetch(this.props.api_http+"/subtitles?ih="+res.hash+"&path="+res.file)
+                    .then(res => {
+                        if (res.ok)
+                            return res.json()
+                        else
+                            throw res
+                    })
+                    .then(data => {
                         this.setState({
                             subtitles: data
                         })
 
                         this.plyr.props.sources.tracks = data.map((item,key) => this.renderSubtitlePlyr(this.props.api_http,item))
+                    })
+                    .catch(error => {
+                        console.log('subtitles request failed', error)
                     })
                     .finally(() => {
                         console.log("fetched subtitles")
@@ -143,7 +157,7 @@ class App extends React.Component {
                     })
             })
             .catch(error => {
-                console.log('request failed', error)
+                console.log('metadata request failed', error)
 
                 this.setState({ status: "metadata failed" })
             });

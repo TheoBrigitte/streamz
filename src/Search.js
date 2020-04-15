@@ -35,13 +35,22 @@ class Search extends Component {
 
     onSuggestionsFetchRequested = ({ value, reason }) => {
         if (reason === 'suggestion-revealed') {
-            axios.get(this.props.api_http+"/search?query="+value)
-                .then(({ data }) => {
+            fetch(this.props.api_http+"/search?query="+value)
+                .then(res => {
+                    if (res.ok)
+                        return res.json()
+                    else
+                        throw res
+                })
+                .then(data => {
                     if (data.length > 0) {
                         this.setState({
                             suggestions: data
                         })
                     }
+                })
+                .catch(error => {
+                    console.log('suggestion request failed', error)
                 })
         }
     };
