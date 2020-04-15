@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Autosuggest from 'react-autosuggest';
-import axios from 'axios'
 //import Suggestions from './Suggestions'
 
 const getSuggestionValue = suggestion => suggestion.title;
