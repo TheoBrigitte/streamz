@@ -13,7 +13,7 @@ class App extends React.Component {
             squares: Array(1).fill({Status: "initialize", Width: 100}),
             subtitleID: null,
             subtitles: [],
-        };
+        }
         this.ws = false
         this.plyr = <PlyrComponent
             sources={{
@@ -40,13 +40,6 @@ class App extends React.Component {
         // Load hash from url anchor.
         if (window.location.hash.length > 0) {
             var value = window.location.hash.substr(1)
-            //this.setState({ hash: window.location.hash.substr(1) })
-
-            //var event = new Event('change', { bubbles: true });
-            //console.log(this.refs.hash);
-            //console.log(event);
-            //this.refs.hash.dispatchEvent(event, { value: value });
-            this.refs.hash.value = value
 
             var fakeEvent = { target: { value: value } }
             this.handleHashChange(fakeEvent)
@@ -54,15 +47,15 @@ class App extends React.Component {
     }
 
     handleSearchClick = (value) => {
-        console.log("search click", value); // value is 42
+        console.log("search click", value)
         var fakeEvent = { target: { value: value } }
         this.handleHashChange(fakeEvent)
-    };
+    }
 
     handleSubtitleChange(id) {
         console.log("handleSubtitleChange", id)
-        //this.refs.hash.value = value
-        this.setState({ subtitleID: id });
+
+        this.setState({ subtitleID: id })
     }
 
     progress = (event) => {
@@ -159,7 +152,7 @@ class App extends React.Component {
                 console.log('metadata request failed', error)
 
                 this.setState({ status: "metadata failed" })
-            });
+            })
     }
 
     // Render a fragment of the progress bar.
@@ -223,7 +216,7 @@ class App extends React.Component {
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 }
 
