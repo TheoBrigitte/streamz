@@ -1,12 +1,6 @@
 import React, { Component } from 'react'
 import Autosuggest from 'react-autosuggest';
 
-const getSuggestionValue = suggestion => suggestion.title;
-
-const renderSuggestion = suggestion => (
-    <span>{suggestion.title}</span>
-);
-
 class Search extends Component {
     constructor(props) {
         super(props)
@@ -63,6 +57,14 @@ class Search extends Component {
         this.props.handleClick(s.suggestion.torrent.hash)
     };
 
+    // Select which value fills input
+    getSuggestionValue = suggestion => suggestion.title
+
+    // Render suggestion items
+    renderSuggestion = suggestion => (
+        <span key={suggestion.id}>{suggestion.title}</span>
+    )
+
     render() {
         const { value, suggestions } = this.state;
 
@@ -75,15 +77,17 @@ class Search extends Component {
 
 
         return (
-            <Autosuggest
-                suggestions={suggestions}
-                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                onSuggestionSelected={this.onSuggestionSelected}
-                getSuggestionValue={getSuggestionValue}
-                renderSuggestion={renderSuggestion}
-                inputProps={inputProps}
-            />
+            <div>
+                <Autosuggest
+                    suggestions={suggestions}
+                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                    onSuggestionSelected={this.onSuggestionSelected}
+                    getSuggestionValue={this.getSuggestionValue}
+                    renderSuggestion={this.renderSuggestion}
+                    inputProps={inputProps}
+                />
+            </div>
         );
     }
 }
