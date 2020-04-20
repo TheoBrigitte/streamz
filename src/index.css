@@ -86,6 +86,16 @@ body {
     border-radius: 4px;
 }
 
+.search .result {
+    margin: 20px;
+}
+
+.search .result span {
+    margin: 5px;
+    padding: 5px;
+    border: solid 1px lightgrey;
+}
+
 .react-autosuggest__input--focused {
     outline: none;
 }

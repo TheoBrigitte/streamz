@@ -87,6 +87,14 @@ class Search extends Component {
                     renderSuggestion={this.renderSuggestion}
                     inputProps={inputProps}
                 />
+
+                <div className="result">
+                    {this.state.suggestions.length ? (
+                        this.state.suggestions.map(item => this.renderSuggestion(item))
+                    ) : (
+                        'No result'
+                    )}
+                </div>
             </div>
         );
     }
