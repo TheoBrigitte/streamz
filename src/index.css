@@ -53,29 +53,29 @@ body {
     background-color: red;
 }
 
-.input {
+.search {
     height: 60px;
     margin: 0 auto;
     text-align: center;
     width: 45%;
 }
 
-.input > div {
+.search .react-autosuggest__container {
     display: inline-block;
     margin: 0 14px;
 }
 
-.react-autosuggest__container {
+.search .react-autosuggest__container {
     position: relative;
     text-align: left;
 }
 
-.input .hash input {
+.search .hash input {
     text-align: center;
     width: 400px;
 }
 
-.input input {
+.search input {
     width: 240px;
     height: 30px;
     padding: 10px 20px;
