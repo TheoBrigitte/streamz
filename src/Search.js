@@ -48,9 +48,6 @@ class Search extends Component {
     };
 
     onSuggestionsClearRequested = () => {
-        this.setState({
-            suggestions: []
-        });
     };
 
     onSuggestionSelected = ( e, s ) => {
