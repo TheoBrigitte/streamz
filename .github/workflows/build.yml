@@ -12,3 +12,5 @@ jobs:
       - run: echo ${{ secrets.DOCKER_PASS }} | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
       - run: make package
       - run: make publish
+      - name: deploy
+        run: make deploy SSH_ID_RSA=${{ secrets.SSH_ID_RSA }} SSH_KNOWN_HOSTS=${{ secrets.SSH_KNOWN_HOSTS }} SSH_HOST=${{ secret.SSH_HOST }}

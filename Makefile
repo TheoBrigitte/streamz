@@ -15,6 +15,14 @@ package:
 publish:
 	@docker push ${DOCKER_IMAGE}
 
+deploy:
+	@docker run --rm \
+            -e SSH_ID_RSA="$(SSH_ID_RSA)" \
+            -e SSH_KNOWN_HOSTS="$(SSH_KNOWN_HOSTS)" \
+	    theo01/docker-systemctl:latest \
+	    -H $(SSH_HOST) \
+	    status $(shell basename systemd/*)
+
 run:
 	npm start
 
