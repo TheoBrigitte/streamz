@@ -21,7 +21,7 @@ deploy:
             -e SSH_KNOWN_HOSTS="$(SSH_KNOWN_HOSTS)" \
 	    theo01/docker-systemctl:latest \
 	    -H $(SSH_HOST) \
-	    status $(shell basename systemd/*)
+	    restart $(shell basename systemd/*)
 
 run:
 	npm start
