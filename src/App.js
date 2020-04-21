@@ -130,7 +130,7 @@ class App extends React.Component {
                 }
 
                 console.log("fetching subtitles")
-                fetch(this.props.api_http+"/subtitles?ih="+res.hash+"&path="+res.file)
+                fetch(this.props.api_http+"/subtitles?ih="+res.hash+"&path="+res.file+"&lang=eng&lang=fre")
                     .then(res => {
                         if (res.ok)
                             return res.json()
