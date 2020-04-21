@@ -37,7 +37,7 @@ class App extends React.Component {
                     label: item.language + ' (' + item.downloads + ')',
                     srclang: 'en',
                     src: this.props.api_http+"/subtitle?id="+item.id
-                })
+                }, false)
             })
         }
     }
