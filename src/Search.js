@@ -10,6 +10,7 @@ class Search extends Component {
 
             query: '',
             results: [],
+            searching: false,
         }
     }
 
@@ -27,6 +28,9 @@ class Search extends Component {
 
     onSuggestionsFetchRequested = ({ value, reason }) => {
         if (reason === 'suggestion-revealed') {
+            this.setState({
+                searching: true
+            })
             fetch(this.props.api_http+"/search?query="+value)
                 .then(res => {
                     if (res.ok)
@@ -43,6 +47,11 @@ class Search extends Component {
                 })
                 .catch(error => {
                     console.log('suggestion request failed', error)
+                })
+                .finally(() => {
+                    this.setState({
+                        searching: false
+                    })
                 })
         }
     };
@@ -62,6 +71,14 @@ class Search extends Component {
         <span key={suggestion.id}>{suggestion.title}</span>
     )
 
+    renderInputComponent = inputProps => (
+        <div className="input">
+            <input {...inputProps} />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26" aria-hidden="true" className="search-icon"><path d="M18 13c0-3.859-3.141-7-7-7s-7 3.141-7 7 3.141 7 7 7 7-3.141 7-7zm8 13c0 1.094-.906 2-2 2a1.96 1.96 0 01-1.406-.594l-5.359-5.344a10.971 10.971 0 01-6.234 1.937c-6.078 0-11-4.922-11-11s4.922-11 11-11 11 4.922 11 11c0 2.219-.672 4.406-1.937 6.234l5.359 5.359c.359.359.578.875.578 1.406z"></path></svg>
+              <div className={`loadingspinner ${this.state.searching?"":"hide"}`}></div>
+        </div>
+    )
+
     render() {
         const { value, suggestions } = this.state;
 
@@ -74,7 +91,7 @@ class Search extends Component {
 
 
         return (
-            <div>
+            <div className="search">
                 <Autosuggest
                     suggestions={suggestions}
                     onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -82,6 +99,7 @@ class Search extends Component {
                     onSuggestionSelected={this.onSuggestionSelected}
                     getSuggestionValue={this.getSuggestionValue}
                     renderSuggestion={this.renderSuggestion}
+                    renderInputComponent={this.renderInputComponent}
                     inputProps={inputProps}
                 />
 
@@ -89,7 +107,7 @@ class Search extends Component {
                     {this.state.suggestions.length ? (
                         this.state.suggestions.map(item => this.renderSuggestion(item))
                     ) : (
-                        'No result'
+                        this.state.searching ? 'Searching': 'No result'
                     )}
                 </div>
             </div>

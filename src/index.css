@@ -54,7 +54,6 @@ body {
 }
 
 .search {
-    height: 60px;
     margin: 0 auto;
     text-align: center;
     width: 45%;
@@ -63,9 +62,6 @@ body {
 .search .react-autosuggest__container {
     display: inline-block;
     margin: 0 14px;
-}
-
-.search .react-autosuggest__container {
     position: relative;
     text-align: left;
 }
@@ -75,15 +71,54 @@ body {
     width: 400px;
 }
 
-.search input {
+.search .input {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid lightgrey;
+    border-radius: 30px;
+    padding: 8px 16px;
     width: 240px;
-    height: 30px;
-    padding: 10px 20px;
+}
+
+.search .input input {
+    border: none;
+    width: 91%;
     font-family: Helvetica, sans-serif;
     font-weight: 300;
     font-size: 16px;
-    border: 1px solid #aaa;
-    border-radius: 4px;
+}
+
+.search .input input:focus {
+    outline: none;
+}
+
+.search .search-icon {
+    flex: 0 0 20px;
+    fill: #333;
+    margin: -6px;
+    margin-left: 5px;
+}
+
+.search .loadingspinner {
+    margin-left: -16px;
+    pointer-events: none;
+    width: 17px;
+    height: 17px;
+    border: 2px solid transparent;
+    border-color: transparent;
+    border-top-color: dodgerblue;
+    border-radius: 50%;
+    animation: loadingspin 1s linear infinite;
+}
+
+.search .hide {
+    border-top-color: transparent;
+}
+
+@keyframes loadingspin {
+    100% {
+        transform: rotate(360deg)
+    }
 }
 
 .search .result {

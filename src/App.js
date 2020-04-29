@@ -185,9 +185,7 @@ class App extends React.Component {
                     <div className="connection"><div className="label">Connection</div><div>{this.state.status}</div></div>
                     <div className="name"><div className="label">Name</div><div>{this.state.metadata ? this.state.metadata.name : ''}</div></div>
                 </div>
-                <div className="search">
-                    <Search handleClick={this.handleSearchClick} api_http={this.props.api_http} api_ws={this.props.api_ws} />
-                </div>
+                <Search handleClick={this.handleSearchClick} api_http={this.props.api_http} api_ws={this.props.api_ws} />
                 <div className="player">
                     <div className="container">
                         {this.state.loaded ?
