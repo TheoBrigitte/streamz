@@ -56,14 +56,6 @@ body {
 .search {
     margin: 0 auto;
     text-align: center;
-    width: 45%;
-}
-
-.search .react-autosuggest__container {
-    display: inline-block;
-    margin: 0 14px;
-    position: relative;
-    text-align: left;
 }
 
 .search .hash input {
@@ -72,6 +64,7 @@ body {
 }
 
 .search .input {
+    margin: auto;
     display: flex;
     justify-content: space-between;
     border: 1px solid lightgrey;
@@ -122,10 +115,25 @@ body {
 }
 
 .search .result {
-    margin: 20px;
+    margin: auto;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 200px);
+    max-width: 110rem;
+    grid-gap: 2rem;
 }
 
-.search .result span {
+.search .result .movie {
+    text-align: left;
+    height: 375px;
+    width: 200px;
+}
+
+.search .result .movie img {
+  width: 100%;
+}
+
+.search .result .movie .title {
     margin: 5px;
     padding: 5px;
     border: solid 1px lightgrey;
