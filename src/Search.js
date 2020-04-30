@@ -13,6 +13,9 @@ class Search extends React.Component {
     onKeyDown = (event) => {
         if (event.key === 'Enter') {
             console.log('onKeyDown', event.target.value)
+            this.setState({
+                suggestions: []
+            })
             this.fetchRequested({value: event.target.value})
         }
     }
