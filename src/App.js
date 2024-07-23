@@ -36,7 +36,7 @@ class App extends React.Component {
                     kind: 'subtitles',
                     label: item.language + ' (' + item.downloads + ')',
                     srclang: 'en',
-                    src: this.props.api_http+"/subtitle?id="+item.id
+                    src: this.props.api.confluence+"/subtitle?id="+item.id
                 }, false)
             })
         }
@@ -73,7 +73,7 @@ class App extends React.Component {
 
     wsConnect = (hash) => {
         // Poll information on download progression.
-        var ws = new WebSocket(this.props.api_ws+"/progress?ih="+hash)
+        var ws = new WebSocket(this.props.api.websocket+"/progress?ih="+hash)
 
         ws.onopen = () => {
             console.log("ws connected")
@@ -109,7 +109,7 @@ class App extends React.Component {
             subtitles: [],
             hash: event.target.value,
         })
-        fetch(this.props.api_http+"/metadata?query="+event.target.value)
+        fetch(this.props.api.confluence+"/metadata?query="+event.target.value)
             .then(res => {
                 if (res.ok)
                     return res.json()
@@ -125,12 +125,12 @@ class App extends React.Component {
                 })
 
                 this.videoPlayer.props.options.sources[0] = {
-                    src: this.props.api_http+"/data?ih=" + res.hash + "&path="+res.file,
+                    src: this.props.api.confluence+"/data?ih=" + res.hash + "&path="+res.file,
                     type: 'video/mp4',
                 }
 
                 console.log("fetching subtitles")
-                fetch(this.props.api_http+"/subtitles?ih="+res.hash+"&path="+res.file+"&lang=eng&lang=fre")
+                fetch(this.props.api.confluence+"/subtitles?ih="+res.hash+"&path="+res.file+"&lang=eng&lang=fre")
                     .then(res => {
                         if (res.ok)
                             return res.json()
@@ -185,7 +185,7 @@ class App extends React.Component {
                     <div className="connection"><div className="label">Connection</div><div>{this.state.status}</div></div>
                     <div className="name"><div className="label">Name</div><div>{this.state.metadata ? this.state.metadata.name : ''}</div></div>
                 </div>
-                <Search handleClick={this.handleSearchClick} api_http={this.props.api_http} api_ws={this.props.api_ws} />
+                <Search handleClick={this.handleSearchClick} api={this.props.api} />
                 <div className="player">
                     <div className="container">
                         {this.state.loaded ?

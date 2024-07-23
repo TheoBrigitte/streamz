@@ -24,7 +24,7 @@ class Search extends React.Component {
         this.setState({
             searching: true
         })
-        fetch(this.props.api_http+"/search?query="+value)
+        fetch(this.props.api.confluence+"/search?query="+value)
             .then(res => {
                 if (res.ok)
                     return res.json()
@@ -54,7 +54,7 @@ class Search extends React.Component {
 
     // Render suggestion items
     renderSuggestion = suggestion => (
-        <VideoDetail data={suggestion} key={suggestion.id} onClick={this.onSuggestionSelected} />
+        <VideoDetail data={suggestion} api={this.props.api} key={suggestion.id} onClick={this.onSuggestionSelected} />
     )
 
     render() {

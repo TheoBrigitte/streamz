@@ -1,22 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-
+import App from './App';
 import './index.css';
 
-import App from './App';
+const api = {
+    confluence: 'https://confluence/api',
+    websocket:  'wss://confluence/api',
+    tmdb:       'https://api.themoviedb.org',
+    tmdb_image: 'https://image.tmdb.org/t/p',
+}
 
-const API_HTTP_PROTO= 'https://'
-const API_WS_PROTO= 'wss://'
-const API_HOSTPATH = 'confluence/api'
-
-const API_HTTP = API_HTTP_PROTO+API_HOSTPATH
-const API_WS= API_WS_PROTO+API_HOSTPATH
-
-export const load = () => {
+const load = () => {
   var start = Date.now()
   console.log('loading');
-  ReactDOM.render(<App api_http={API_HTTP} api_ws={API_WS} />, document.getElementById('root'));
+  ReactDOM.render(<App api={api} />, document.getElementById('root'));
   console.log('loaded in ',Date.now() - start,'ms');
 };
 
